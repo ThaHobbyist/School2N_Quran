@@ -67,7 +67,8 @@ const Choice = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	margin-top: 4rem;
+	margin-top: 1.5rem;
+	flex-wrap: wrap;
 
 	.itm {
 		background: rgba(255, 255, 255, 0.65);
@@ -75,8 +76,10 @@ const Choice = styled.div`
 		box-shadow: 2.5px 2.5px 0px #000000;
 		border-radius: 20px;
 
-		width: 334px;
+		/* width: 334px; */
+		min-width: 20rem;
 		max-height: 50rem;
+		margin-bottom: 2.2rem ;
 
 		flex-direction: column;
 		align-items: center;

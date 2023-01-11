@@ -23,16 +23,18 @@ const Bk = styled.div`
 	align-items: center;
 	justify-content: flex-start;
 
-	margin: 1.5rem 0 1.5rem 0;
+	margin-top: 1.8rem  ;
 
 	.icon {
-		width: 38px;
+		width: 2.375rem;
+		height: 2.375rem;
 	}
 
 	h5 {
 		font-family: "Josefin Sans";
 		font-style: normal;
 		font-weight: 600;
+		font-size: 2.5rem;
 
 		display: flex;
 		align-items: center;

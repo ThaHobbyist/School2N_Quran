@@ -3,10 +3,9 @@ import styled from "styled-components";
 
 import { ReactComponent as Panda } from "../assets/Panda.svg";
 
-import Choices from "../components/Choices"
+import Choices from "../components/Choices";
 import Navbar from "../components/Navbar";
 import Heading from "../components/Heading";
-
 
 function Landing() {
 	return (
@@ -35,12 +34,13 @@ function Landing() {
 const Bg = styled.div`
 	background: linear-gradient(to bottom right, #fff, #a158ff);
 	margin: 0;
-	height: 100vh;
-	width: 100vw;
+	height: 100%;
+	width: 100%;
 	position: absolute;
 
 	z-index: -2;
-	overflow-y: hidden;
+	
+	overflow: auto;
 `;
 
 const CircleGreen = styled.div`
@@ -72,39 +72,41 @@ const CircleYellow = styled.div`
 	height: 533px;
 	left: 69rem;
 	top: 57rem;
+
+	overflow: hidden;
 `;
 
 const Container = styled.div`
 	margin: 2.5rem;
 	background: transparent;
-
-	.tagline {
-		margin-top: 15vh;
-
-		p {
-			font-family: "Righteous";
-			font-style: normal;
-			font-weight: 400;
-			font-size: 95px;
-			text-transform: capitalize;
-
-			color: #d5f800;
-
-			-webkit-text-stroke: 2px #000;
-			text-shadow: 2.5px 2.5px 0px #000000;
-
-			margin: 0;
-		}
-	}
+	overflow: auto;
 
 	.content {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-	}
+		margin-top: 5rem;
 
-	.content .panda {
-		margin-right: 3rem;
+		.tagline {
+			p {
+				font-family: "Righteous";
+				font-style: normal;
+				font-weight: 400;
+				font-size: 95px;
+				text-transform: capitalize;
+
+				color: #d5f800;
+
+				-webkit-text-stroke: 2px #000;
+				text-shadow: 2.5px 2.5px 0px #000000;
+
+				margin: 0;
+			}
+		}
+
+		.panda {
+			margin-right: 3rem;
+		}
 	}
 `;
 

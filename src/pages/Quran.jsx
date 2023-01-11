@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import {useNavigate} from "react-router-dom" ;
 
 import Navbar from "../components/Navbar";
 import Heading from "../components/Heading";
@@ -13,21 +14,26 @@ import { ReactComponent as Book3 } from "../assets/Book3.svg";
 import { ReactComponent as Pin2 } from "../assets/Pin2.svg";
 
 function Quran() {
+	const navigate = useNavigate();
+
 	const modes = [
 		{
 			id: 1,
 			name: "Para Wise",
 			icon: <Book />,
+			path: "/quran"
 		},
 		{
 			id: 2,
 			name: "Surah Wise",
 			icon: <Book2 />,
+			path: "/readSurah"
 		},
 		{
 			id: 3,
 			name: "Pinned Items",
 			icon: <Pin2 />,
+			path: "/quran"
 		},
 	];
 
@@ -44,19 +50,18 @@ function Quran() {
 							<div className="buttons">
 								{modes.map((mode) => {
 									return (
-										<Btn key={mode.id}>
+										<Btn key={mode.id} onClick={() => navigate(mode.path)} >
 											<div className="data">
 												{mode.icon}
 												<p>{mode.name}</p>
 											</div>
-
 											<MdKeyboardArrowRight className="icon" />
 										</Btn>
 									);
 								})}
 							</div>
 						</div>
-						<Book3 />
+						<Book3 className="ill" />
 					</div>
 				</Container>
 				<Navbar />
@@ -73,7 +78,7 @@ const Bg = styled.div`
 	position: absolute;
 
 	z-index: -2;
-	overflow-y: hidden;
+	overflow-y: auto;
 `;
 
 const Btn = styled.button`
@@ -82,8 +87,9 @@ const Btn = styled.button`
 	justify-content: space-between;
 	cursor: pointer;
 
-	width: 30vw;
+	min-width: 35vw;
 	padding: 1rem 1.5rem;
+	margin-bottom: 1rem;
 
 	background: #fbff3d;
 	border: 4px solid #000000;
@@ -149,6 +155,14 @@ const Container = styled.div`
 		margin-top: 2rem;
 		height: 60vh;
 
+
+		.ill{
+			min-height: 50vh;
+			max-height: 80vh;
+			min-width: 50vh;
+			max-width: 80vh;
+		}
+
 		.mode {
 			.buttons {
 				display: flex;
@@ -156,11 +170,12 @@ const Container = styled.div`
 				align-items: flex-start;
 				justify-content: space-around;
 
-				height: 50vh;
+				min-height: 50vh;
 			}
 
 			.subtitle {
 				margin: 0;
+				margin-bottom: 1.2rem;
 				font-family: "Righteous";
 				font-style: normal;
 				font-size: 50px;
