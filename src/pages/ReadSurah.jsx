@@ -1,42 +1,83 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import Navbar from "../components/Navbar";
 import Back from "../components/Back";
 import Heading from "../components/Heading";
-import DisplayData from "../components/DisplayData"
+import DisplayData from "../components/DisplayData";
+import Surah from "../components/Surah";
 
 function ReadSurah() {
+	// Make a state about the surah selected, if none is selected, display the surah list. if selected, display the contents of the surah and the player. Just writing this down in case I forget later on
 
+	const [surahNum, setSurahNum] = useState(0);
 
+	useEffect(() => {
+		console.log(surahNum);
+	}, [surahNum]);
+
+	const selectSurah = (num) => {
+		setSurahNum(num);
+	};
+
+	const moveFirst = () => {
+		setSurahNum(1);
+	};
+
+	const movePrev = () => {
+		if (surahNum > 1) {
+			setSurahNum(surahNum - 1);
+		}
+	};
+
+	const moveNext = () => {
+		if (surahNum < 114) {
+			setSurahNum(surahNum + 1);
+		}
+	};
+
+	const moveLast = () => {
+		setSurahNum(114);
+	};
 
 	return (
 		<>
 			<Bg>
-				<Container>
-					<Heading />
-					<Back />
-					<div className="content">
-						<div className="title">
-							<h5>Learning Quran {">"} </h5>
-							<h6>Surah Wise</h6>
-						</div>
-						<div className="body">
-							<DisplayData />
-							<div className="def">
-								<h5>Surah:</h5>
-								<h6>
-									A surah, is the equivalent of "chapter" in
-									the Qur'an. There are 114 surahs in the
-									Quran, each divided into ayats. The chapters
-									or surahs are of unequal length; the
-									shortest surah has only three verses while
-									the longest contains 286 verses.
-								</h6>
+				{surahNum > 0 ? (
+					<Surah
+						surah={surahNum}
+						moveFirst={moveFirst}
+						movePrev={movePrev}
+						moveNext={moveNext}
+						moveLast={moveLast}
+					/>
+				) : (
+					<Container>
+						<Heading />
+						<Back />
+						<div className="content">
+							<div className="title">
+								<h5>Learning Quran {">"} </h5>
+								<h6>Surah Wise</h6>
+							</div>
+							<div className="body">
+								<DisplayData SurahNum={selectSurah} />
+								<div className="def">
+									<h5>Surah:</h5>
+									<h6>
+										A surah, is the equivalent of "chapter"
+										in the Qur'an. There are 114 surahs in
+										the Quran, each divided into ayats. The
+										chapters or surahs are of unequal
+										length; the shortest surah has only
+										three verses while the longest contains
+										286 verses.
+									</h6>
+								</div>
 							</div>
 						</div>
-					</div>
-				</Container>
+					</Container>
+				)}
 				<Navbar />
 			</Bg>
 		</>
@@ -111,7 +152,6 @@ const Container = styled.div`
 			.def {
 				width: 35vw;
 				padding: 0 2rem;
-				
 
 				h5 {
 					font-family: "K2D";
@@ -131,7 +171,6 @@ const Container = styled.div`
 					font-weight: 400;
 					font-size: 1.8rem;
 					margin: 0;
-					
 
 					/* -webkit-text-stroke: 0.5px #000;
 					text-shadow: 1px 1px 0px #000000; */

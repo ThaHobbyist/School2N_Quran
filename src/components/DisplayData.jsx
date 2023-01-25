@@ -1,17 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import {useNavigate} from 'react-router-dom'
 
-import { ReactComponent as Des } from "../assets/num.svg";
 import Des2 from "../assets/num.png";
 
 import Quran from "../utils/Quran.json";
-import Quran_translated from "../utils/Quran_translated.json";
 import colorSet from "../utils/colorSet";
 
-export default function DisplayData() {
+export default function DisplayData(props) {
 	const colors = colorSet["colors"];
 	const Q = Quran["data"];
-	const Q_t = Quran_translated["data"];
 
 	return (
 		<>
@@ -25,9 +23,9 @@ export default function DisplayData() {
 								backgroundColor:
 									colors[Math.floor(Math.random() * 4)],
 							}}
+							onClick={() => props.SurahNum(item.number)}
 						>
 							<div className="number">
-								{/* <Des /> */}
 								<img className="image" src={Des2} alt="" />
 								<p className="num">{item.number}</p>
 							</div>
