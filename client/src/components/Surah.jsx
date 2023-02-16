@@ -11,16 +11,40 @@ import Quran from "../utils/Quran_rectified.json";
 import Des2 from "../assets/num.png";
 
 import { MdPlayCircle } from "react-icons/md";
+import { useEffect } from "react";
 
 export default function Surah(props) {
-	const S = Quran["data"]["surahs"][props.surah - 1];
+	// const S = Quran["data"]["surahs"][props.surah - 1];
 
-	const [currAyah, setCurrAyah] = useState(S["ayahs"][0]);
+	const [currAyah, setCurrAyah] = useState({});
 	const [startPlay, setStartPlay] = useState(false)
+	const [S, setS] = useState([])
+
+	useEffect(() => {
+		console.log(props)
+		// console.log(S["ayahs"])
+		getAyah()
+	}, [])
 
 	const playAyah = (i) => {
-		setCurrAyah(S["ayahs"][i-1])
+		setCurrAyah(S[i - 1])
 		setStartPlay(!startPlay)
+	}
+
+	const getAyah = async () => {
+		if (props.name === "Para") {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/juz/${props.surah}`)
+			const data = await res.json()
+			setCurrAyah(data.ayahs[0])
+			setS(data.ayahs)
+			console.log(data, "line 37")
+		} else {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/surah/${props.surah}`)
+			const data = await res.json()
+			setCurrAyah(data.surah[0])
+			setS(data.surah)
+			console.log(data, "line 41")
+		}
 	}
 
 	return (
@@ -31,14 +55,18 @@ export default function Surah(props) {
 					<div className="title">
 						<Back className="back" />
 						<h5 className="bar">|</h5>
-						<h5 className="head">Surah {props.surah}</h5>
-						<h5 className="bar">|</h5>
-						<h5 className="head">{S["englishName"]}</h5>
+						<h5 className="head">{props.name} {props.surah}</h5>
+						{props.name === "Para" ? (null) : (
+							<>
+								<h5 className="bar">|</h5>
+								<h5 className="head">{props.englishName}</h5>
+							</>
+						)}
 					</div>
 					<div className="body">
 						<div className="content">
 							<div className="ayahs">
-								{S["ayahs"].map((item) => {
+								{S.map((item) => {
 									return (
 										<div className="ayat" key={item.number}>
 											<div className="cont">
@@ -55,14 +83,14 @@ export default function Surah(props) {
 
 												<div className="text">
 													<div className="eng">
-														{item.translated}
+														{item.translatedText}
 													</div>
 													<div className="ar">
 														{item.text}
 													</div>
 												</div>
 											</div>
-											<button onClick={() => {playAyah(item.numberInSurah)}} >
+											<button onClick={() => { playAyah(item.numberInSurah) }} >
 												<MdPlayCircle className="icon" />
 											</button>
 										</div>
@@ -71,7 +99,7 @@ export default function Surah(props) {
 							</div>
 							<Counter
 								num={props.surah}
-								total={Quran["data"]["surahs"].length}
+								total={S.length}
 								moveFirst={props.moveFirst}
 								movePrev={props.movePrev}
 								moveNext={props.moveNext}

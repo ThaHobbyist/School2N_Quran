@@ -45,7 +45,8 @@ app.use(passport.session())
  * Routes
  */
 app.use('/auth', routes.auth)
-app.use('/api', middlewares.auth.base, routes.api)
+app.use('/api', routes.api)
+// app.use('/api', middlewares.auth.base, routes.api)
 
 
 async function main () {

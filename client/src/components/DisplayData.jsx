@@ -1,41 +1,93 @@
 import React from "react";
 import styled from "styled-components";
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import Des2 from "../assets/num.png";
 
-import Quran from "../utils/Quran.json";
+// import Quran from "../utils/Quran.json";
 import colorSet from "../utils/colorSet";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function DisplayData(props) {
 	const colors = colorSet["colors"];
-	const Q = Quran["data"];
+	// const Q = Quran["data"];
+	const [Data, setData] = useState([])
 
+	useEffect(() => {
+		getData()
+	}, [props])
+
+	const getData = async () => {
+		console.log(props)
+		let res;
+		if (props.name === "para") {
+			res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/juz`)
+			const data = await res.json()
+			setData(data.juzs)
+			console.log(data)
+		} else {
+			res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/surah`)
+			const data = await res.json()
+			setData(data.surahs)
+			console.log(data)
+		}
+
+		// console.log(data)
+	}
 	return (
 		<>
 			<Display>
-				{Q["surahs"].map((item) => {
+				{Data.map((item,i) => {
 					return (
-						<div
-							className="data"
-							key={item.number}
-							style={{
-								backgroundColor:
-									colors[Math.floor(Math.random() * 4)],
-							}}
-							onClick={() => props.SurahNum(item.number)}
-						>
-							<div className="number">
-								<img className="image" src={Des2} alt="" />
-								<p className="num">{item.number}</p>
-							</div>
-							<div className="heading">
-								<h5>{item.name}</h5>
-							</div>
-							<div className="translation">
-								<h6>{item.englishName}</h6>
-								<p>{item.englishNameTranslation}</p>
-							</div>
+						<div key={i}>
+							{
+								props.name === "para" ? (
+									<div
+										className="data"
+										key={item.number}
+										style={{
+											backgroundColor:
+												colors[Math.floor(Math.random() * 4)],
+										}}
+										onClick={() => props.SurahNum(item.number)}
+									>
+										<div className="number">
+											<img className="image" src={Des2} alt="" />
+											<p className="num">{item.number}</p>
+										</div>
+										<div className="heading">
+											{/* <h5>{item.name}</h5> */}
+										</div>
+										<div className="translation">
+											<h6>{item.name}</h6>
+											<p>{item.englishNameTranslation}</p>
+										</div>
+									</div>
+								) : (
+									<div
+										className="data"
+										key={item.number}
+										style={{
+											backgroundColor:
+												colors[Math.floor(Math.random() * 4)],
+										}}
+										onClick={() => {props.SurahNum(item.number); props.englishName(item.englishName)}}
+									>
+										<div className="number">
+											<img className="image" src={Des2} alt="" />
+											<p className="num">{item.number}</p>
+										</div>
+										<div className="heading">
+											<h5>{item.name}</h5>
+										</div>
+										<div className="translation">
+											<h6>{item.englishName}</h6>
+											<p>{item.englishNameTranslation}</p>
+										</div>
+									</div>
+								)
+							}
 						</div>
 					);
 				})}

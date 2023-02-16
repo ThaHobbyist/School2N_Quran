@@ -7,19 +7,23 @@ import Heading from "../components/Heading";
 import DisplayData from "../components/DisplayData";
 import Surah from "../components/Surah";
 
-function ReadSurah() {
+function ReadSurah(props) {
 	// Make a state about the surah selected, if none is selected, display the surah list. if selected, display the contents of the surah and the player. Just writing this down in case I forget later on
-
 	const [surahNum, setSurahNum] = useState(0);
+	const [englishN, setenglishN] = useState(null);
 
 	useEffect(() => {
 		console.log(surahNum);
-	}, [surahNum]);
+		console.log(englishN)
+	}, [surahNum,englishN]);
 
 	const selectSurah = (num) => {
 		setSurahNum(num);
 	};
 
+	const selectN = (num) => {
+		setenglishN(num)
+	};
 	const moveFirst = () => {
 		setSurahNum(1);
 	};
@@ -50,6 +54,8 @@ function ReadSurah() {
 						movePrev={movePrev}
 						moveNext={moveNext}
 						moveLast={moveLast}
+						name={props.name}
+						englishName={englishN}
 					/>
 				) : (
 					<Container>
@@ -58,21 +64,27 @@ function ReadSurah() {
 						<div className="content">
 							<div className="title">
 								<h5>Learning Quran {">"} </h5>
-								<h6>Surah Wise</h6>
+								<h6>{props.name} Wise</h6>
 							</div>
 							<div className="body">
-								<DisplayData SurahNum={selectSurah} />
+								<DisplayData SurahNum={selectSurah} englishName={selectN} name={props.name.toLowerCase()} />
 								<div className="def">
-									<h5>Surah:</h5>
-									<h6>
-										A surah, is the equivalent of "chapter"
-										in the Qur'an. There are 114 surahs in
-										the Quran, each divided into ayats. The
-										chapters or surahs are of unequal
-										length; the shortest surah has only
-										three verses while the longest contains
-										286 verses.
-									</h6>
+									<h5>{props.name}:</h5>
+									{props.name === "Surah" ?
+										<h6>
+											A surah, is the equivalent of "chapter"
+											in the Qur'an. There are 114 surahs in
+											the Quran, each divided into ayats. The
+											chapters or surahs are of unequal
+											length; the shortest surah has only
+											three verses while the longest contains
+											286 verses.
+										</h6>
+										:
+										<h6>
+											A juzʼ (Arabic: جُزْءْ, plural: أَجْزَاءْ ajzāʼ, literally meaning "part") is one of thirty parts of varying lengths into which the Quran is divided. It is also known as para (پارہ/পারা) in Iran and the Indian subcontinent.
+										</h6>}
+
 								</div>
 							</div>
 						</div>

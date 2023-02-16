@@ -21,7 +21,7 @@ function Quran() {
 			id: 1,
 			name: "Para Wise",
 			icon: <Book />,
-			path: "/quran"
+			path: "/readPara"
 		},
 		{
 			id: 2,

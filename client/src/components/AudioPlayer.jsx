@@ -19,6 +19,7 @@ export default function AudioPlayer(props) {
 	const animationRef = useRef(); // reference the animation
 
 	useEffect(() => {
+		// console.log(props)
 		const seconds = Math.floor(audioPlayer.current.duration);
 		setDuration(seconds);
 		progressBar.current.max = seconds;
@@ -42,7 +43,7 @@ export default function AudioPlayer(props) {
 	const togglePlayPause = () => {
 		const prevValue = isPlaying;
 		setIsPlaying(!prevValue);
-		props.playAyah()
+		props.playAyah(props.ayah.number)
 		if (!prevValue) {
 			audioPlayer.current.play();
 			animationRef.current = requestAnimationFrame(whilePlaying);

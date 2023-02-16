@@ -11,4 +11,22 @@ router.get('/', async (req, res) => {
     })
 })
 
+router.get('/:ref', async (req, res) => {
+    const { ref } = req.params
+
+    const [r1, r2] = await Promise.all([
+        axios(`http://api.alquran.cloud/v1/surah/${ref}/en.ahmedali`)
+            .then(({ data }) => data),
+        axios(`http://api.alquran.cloud/v1/surah/${ref}/ar.alafasy`)
+            .then(({ data }) => data),
+    ])
+
+    res.status(200).json({
+        surah: r2.data.ayahs.map((ayah, i) => ({
+            ...ayah,
+            translatedText: r1.data.ayahs[i].text
+        }))
+    })
+})
+
 module.exports = router
