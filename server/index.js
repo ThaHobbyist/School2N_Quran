@@ -27,7 +27,7 @@ configPassport()
 app.use(morgan('dev'))
 app.use(express.json())
 app.use(cors({
-  origin: process.env.CORS_ORIGINS || '*',
+  origin: process.env.CORS_ORIGINS || 'http://localhost:3000',
   credentials: true,
   allowedHeaders: [
     'Origin', 'X-Requested-With', 'Content-Type',
@@ -45,7 +45,8 @@ app.use(passport.session())
  * Routes
  */
 app.use('/auth', routes.auth)
-app.use('/api', middlewares.auth.base, routes.api)
+app.use('/api', routes.api)
+// app.use('/api', middlewares.auth.base, routes.api)
 
 
 async function main () {

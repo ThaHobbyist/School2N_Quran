@@ -6,29 +6,42 @@ import { ReactComponent as Panda } from "../assets/Panda.svg";
 import Choices from "../components/Choices";
 import Navbar from "../components/Navbar";
 import Heading from "../components/Heading";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
 function Landing() {
-	return (
-		<>
-			<Bg>
-				<Container>
-					<CircleGreen />
-					<CircleYellow />
-					<Heading />
-					<div className="content">
-						<div className="tagline">
-							<p>Learning</p>
-							<p>Is Always Fun</p>
-						</div>
-						<Panda className="panda" />
-					</div>
+	const [login, setLogin] = useState(localStorage.getItem('login'))
 
-					<Choices />
-				</Container>
-				<Navbar />
-			</Bg>
-		</>
-	);
+	useEffect(() => {
+		console.log(!login)
+	}, [login])
+
+	if (login === "false") {
+		return <Navigate replace={true} to="/login" />
+	} else {
+		return (
+			<>
+				<Bg>
+					<Container>
+						<CircleGreen />
+						<CircleYellow />
+						<Heading />
+						<div className="content">
+							<div className="tagline">
+								<p>Learning</p>
+								<p>Is Always Fun</p>
+							</div>
+							<Panda className="panda" />
+						</div>
+
+						<Choices />
+					</Container>
+					<Navbar />
+				</Bg>
+			</>
+		);
+	}
 }
 
 const Bg = styled.div`

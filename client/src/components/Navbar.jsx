@@ -5,16 +5,30 @@ import { ReactComponent as Settings } from "../assets/settings.svg";
 import { ReactComponent as Pin } from "../assets/Pin.svg";
 import { ReactComponent as Contact } from "../assets/contact.svg";
 import { MdKeyboardArrowRight, MdOutlineMenu } from "react-icons/md";
+import { BiLogOut } from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
 
 function Navbar() {
 	const [navbarOpen, setNavbarOpen] = useState(false);
+	const navigate = useNavigate()
 
 	const handleToggle = () => {
 		setNavbarOpen(!navbarOpen);
 	};
 
-	const closeMenu = () => {
+	const closeMenu = async (id) => {
 		setNavbarOpen(false);
+		if(id === 5){
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/logout`)
+
+			
+
+			if(res.status === 200){
+				navigate("/login")
+				localStorage.setItem('login',false)
+			}
+			
+		}
 	};
 
 	const li_itms = [
@@ -38,6 +52,11 @@ function Navbar() {
 			title: "Contact Us",
 			icon: <Contact />,
 		},
+		{
+			id: 5,
+			title: "Logout",
+			icon: <BiLogOut style={{fontSize:'30px'}}/>,
+		},
 	];
 
 	return (
@@ -58,7 +77,7 @@ function Navbar() {
 								className="text"
 								href={item.path}
 								activeClassname="active-link"
-								onClick={() => closeMenu()}
+								onClick={() => closeMenu(item.id)}
 							>
 								{item.icon}
 								<p>{item.title}</p>
