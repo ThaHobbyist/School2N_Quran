@@ -1,19 +1,40 @@
 import React from 'react'
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from "styled-components";
 import Heading from '../components/Heading';
 import Navbar from '../components/Navbar';
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
 	const [username, setusername] = useState(null)
 	const [password, setPassword] = useState(null)
+	const navigate = useNavigate()
+
 
 	const login = async () => {
+		// console.log("login fun")
+		// const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
+		// 	method: "POST",
+		// 	body: JSON.stringify({username,password})
+		// })
 		const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
 			method: "POST",
-			body: JSON.stringify({username,password})
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			},
+			credentials: "include",
+			body: JSON.stringify({
+				username, password
+			})
 		})
+
+		const result = await res.text()
+		if (result === "OK" || res.status === 200) {
+			localStorage.setItem("login", true)
+			navigate("/")
+		}
 	}
 
 	const handleSubmit = (e) => {
@@ -23,14 +44,13 @@ const Login = () => {
 	}
 
 	const handleChange = (e) => {
-		console.log(e.target)
+		// console.log(e.target)
 		if (e.target.name === "username") {
 			setusername(e.target.value)
 		} else if (e.target.name === "password") {
 			setPassword(e.target.value)
 		}
 	}
-
 	return (
 		<>
 			<Bg>

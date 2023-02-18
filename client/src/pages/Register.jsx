@@ -6,78 +6,88 @@ import Heading from '../components/Heading';
 import Navbar from '../components/Navbar';
 
 const Login = () => {
-    const [username, setusername] = useState(null)
-    const [password, setPassword] = useState(null)
+  const [username, setusername] = useState(null)
+  const [password, setPassword] = useState(null)
 
-    const login = async () => {
-        const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
-            method: "POST",
-            body: JSON.stringify({username,password})
-        })
+  const login = async () => {
+    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        username, password
+      })
+    })
+
+    const result = await res.json()
+    console.log(result)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    console.log(username, password)
+    login()
+  }
+
+  const handleChange = (e) => {
+    console.log(e.target)
+    if (e.target.name === "username") {
+      setusername(e.target.value)
+    } else if (e.target.name === "password") {
+      setPassword(e.target.value)
     }
+  }
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log(username, password)
-        login()
-    }
+  return (
+    <>
+      <Bg>
+        <div style={{ height: "98vh", width: "90vw", margin: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
 
-    const handleChange = (e) => {
-        console.log(e.target)
-        if (e.target.name === "username") {
-            setusername(e.target.value)
-        } else if (e.target.name === "password") {
-            setPassword(e.target.value)
-        }
-    }
-
-    return (
-        <>
-            <Bg>
-                <div style={{ height: "98vh", width: "90vw", margin: "auto", display: "flex", alignItems: "center", justifyContent: "center" }}>
-
-                    <div style={{ height: "70%", width: "90%", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <div className="form" style={{ width: "60%" }}>
-                            <FormContainer>
-                                <form
-                                    onSubmit={(event) => handleSubmit(event)}
-                                >
-                                    <div className="brand">
-                                        <img src="" alt="" />
-                                        <h1>Register</h1>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        placeholder="Username"
-                                        name="username"
-                                        onChange={(e) => handleChange(e)}
-                                        min="3"
-                                    />
-                                    <input
-                                        type="password"
-                                        placeholder="Password"
-                                        name="password"
-                                        onChange={(e) => handleChange(e)}
-                                        min="8"
-                                    />
-                                    <button type="submit">Signup</button>
-                                    <span>
-                                        Already have an account? <Link to="/login">Login</Link>
-                                    </span>
-                                </form>
-                            </FormContainer>
-                        </div>
-                        <div style={{ width: "40%", margin: "auto" }}>
-                            <Heading />
-                        </div>
+          <div style={{ height: "70%", width: "90%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div className="form" style={{ width: "60%" }}>
+              <FormContainer>
+                <form
+                  onSubmit={(event) => handleSubmit(event)}
+                >
+                  <div className="brand">
+                    <img src="" alt="" />
+                    <h1>Register</h1>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    name="username"
+                    onChange={(e) => handleChange(e)}
+                    min="3"
+                  />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    onChange={(e) => handleChange(e)}
+                    min="8"
+                  />
+                  <button type="submit">Signup</button>
+                  <span>
+                    Already have an account? <Link to="/login">Login</Link>
+                  </span>
+                </form>
+              </FormContainer>
+            </div>
+            <div style={{ width: "40%", margin: "auto" }}>
+              <Heading />
+            </div>
 
 
-                    </div>
+          </div>
 
-                </div>
-            </Bg>
-        </>
-    )
+        </div>
+      </Bg>
+    </>
+  )
 }
 
 const Bg = styled.div`

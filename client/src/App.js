@@ -6,18 +6,26 @@ import ReadSurah from "./pages/ReadSurah";
 import ReadPara from "./pages/ReadPara";
 import Login from "./pages/Login";
 import Register from "./pages/Register"
+import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
+	const [login, setLogin] = useState(localStorage.getItem('login'))
+
+	useEffect(() => {
+		console.log(login)
+	}, [login])
+
 	return (
 		<Router>
-				<Routes>
-					<Route path="/" element={<Landing />} />
-					<Route path="/quran" element={<Quran />} />
-					<Route path="/login" element={<Login/>} />
-					<Route path="/register" element={<Register/>} />
-					<Route path="/readSurah" element={<ReadSurah name="Surah" />} />
-					<Route path="/readPara" element={<ReadSurah name="Para" />} />
-				</Routes>
+			<Routes>
+				<Route path="/" element={<Landing />} />
+				<Route path="/quran" element={<Quran />} />
+				<Route path="/readSurah" element={<ReadSurah name="Surah" />} />
+				<Route path="/readPara" element={<ReadSurah name="Para" />} />
+				<Route path="/login" element={<Login />} />
+				<Route path="/register" element={<Register />} />
+			</Routes>
 		</Router>
 	);
 }
