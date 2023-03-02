@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Quran from "./pages/Quran";
 import ReadSurah from "./pages/ReadSurah";
-import ReadPara from "./pages/ReadPara";
+// import ReadPara from "./pages/ReadPara";
 import Login from "./pages/Login";
 import Register from "./pages/Register"
 import { useState } from "react";

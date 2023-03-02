@@ -22,12 +22,17 @@ export default function DisplayData(props) {
 		console.log(props)
 		let res;
 		if (props.name === "para") {
-			res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/juz`)
+			res = await fetch(`/api/juz`,{
+				method:"GET",
+				headers:{
+					"content-type":"application/json"
+				}
+			})
 			const data = await res.json()
 			setData(data.juzs)
 			console.log(data)
 		} else {
-			res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/surah`)
+			res = await fetch(`/api/surah`)
 			const data = await res.json()
 			setData(data.surahs)
 			console.log(data)

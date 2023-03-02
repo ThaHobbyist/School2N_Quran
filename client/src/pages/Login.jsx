@@ -18,7 +18,7 @@ const Login = () => {
 		// 	method: "POST",
 		// 	body: JSON.stringify({username,password})
 		// })
-		const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
+		const res = await fetch(`/auth/login`, {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -31,6 +31,7 @@ const Login = () => {
 		})
 
 		const result = await res.text()
+		// console.log(res)
 		if (result === "OK" || res.status === 200) {
 			localStorage.setItem("login", true)
 			navigate("/")

@@ -8,42 +8,83 @@ import AudioPlayer from "../components/AudioPlayer";
 import Counter from "../components/Counter";
 import Quran from "../utils/Quran_rectified.json";
 
+
 import Des2 from "../assets/num.png";
 
 import { MdPlayCircle } from "react-icons/md";
+import { AiOutlinePushpin, AiFillPushpin } from "react-icons/ai";
 import { useEffect } from "react";
 
 export default function Surah(props) {
 	// const S = Quran["data"]["surahs"][props.surah - 1];
 
+	const [favourites, setfavourites] = useState([])
 	const [currAyah, setCurrAyah] = useState({});
 	const [startPlay, setStartPlay] = useState(false)
 	const [S, setS] = useState([])
 
 	useEffect(() => {
 		console.log(props)
-		// console.log(S["ayahs"])
 		getAyah()
+		getFav()
+		// console.log(favourites.includes((0).toString()))
 	}, [])
+
+	const getFav = async ()=>{
+		const res = await fetch(`/api/ayah/fav`)
+		const data = await res.json()
+		const favourites = data.favourites;
+		setfavourites(favourites)
+		console.log(favourites)
+	}
 
 	const playAyah = (i) => {
 		setCurrAyah(S[i - 1])
 		setStartPlay(!startPlay)
 	}
 
+	const pin = async (i) => {
+		console.log(S[i - 1], i);
+		
+		let t = {}
+		console.log(favourites.includes((i - 1).toString()), i - 1)
+		if (favourites.includes((i - 1).toString()) === false) {
+			t = {
+				"push": "true",
+				"pop": "false"
+			}
+		}
+		if (favourites.includes((i - 1).toString()) === true) {
+			t = {
+				"push": "false",
+				"pop": "true"
+			}
+		}
+		const resput = await fetch(`/api/ayah/fav/${i - 1}`, {
+			method: "POST",
+			headers: {
+				"content-type": "application/json"
+			},
+			body: JSON.stringify(t)
+		})
+		const result = await resput.json()
+		console.log(result, "0000000000000000000")
+		setfavourites(result.favourites)
+	}
+
 	const getAyah = async () => {
 		if (props.name === "Para") {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/juz/${props.surah}`)
+			const res = await fetch(`/api/juz/${props.surah}`)
 			const data = await res.json()
 			setCurrAyah(data.ayahs[0])
 			setS(data.ayahs)
-			console.log(data, "line 37")
+			// console.log(data, "line 37")
 		} else {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/surah/${props.surah}`)
+			const res = await fetch(`/api/surah/${props.surah}`)
 			const data = await res.json()
 			setCurrAyah(data.surah[0])
 			setS(data.surah)
-			console.log(data, "line 41")
+			// console.log(data, "line 41")
 		}
 	}
 
@@ -90,9 +131,17 @@ export default function Surah(props) {
 													</div>
 												</div>
 											</div>
-											<button onClick={() => { playAyah(item.numberInSurah) }} >
-												<MdPlayCircle className="icon" />
-											</button>
+
+											<div style={{ display: "flex" }}>
+												<button onClick={() => { playAyah(item.numberInSurah) }} >
+													<MdPlayCircle className="icon" />
+												</button>
+												<button style={{ marginLeft: "10px", padding: "4px" }} onClick={() => { pin(item.numberInSurah) }} >
+													{
+														favourites.includes((item.numberInSurah-1).toString()) ? (<AiFillPushpin className="icon" />) : (<AiOutlinePushpin className="icon" />)
+													}
+												</button>
+											</div>
 										</div>
 									);
 								})}

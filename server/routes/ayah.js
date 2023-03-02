@@ -3,7 +3,7 @@ const axios = require('axios').default
 
 const router = Router()
 
-router.get('/:ref', async (req, res) => {
+router.get('/id/:ref', async (req, res) => {
     const { ref } = req.params
 
     const [r1, r2] = await Promise.all([
@@ -21,10 +21,16 @@ router.get('/:ref', async (req, res) => {
     })
 })
 
-router.put('/fav/:ref', async (req, res) => {
-    const { ref } = req.params
-    const { push, pop } = req.query
+router.get('/fav', async (req, res) => {
+    res.status(200).json({
+        favourites: req.user.favourites
+    })
+})
 
+router.post('/fav/:ref', async (req, res) => {
+    const { ref } = req.params
+    const { push, pop } = req.body
+    console.log(ref,push,pop,req.body)
     const favs = req.user.favourites
 
     if (push === 'true') {
@@ -33,6 +39,8 @@ router.put('/fav/:ref', async (req, res) => {
     else if(pop === 'true') {
         req.user.favourites = favs.filter(r => r !== ref)
     }
+
+    console.log(req.user.favourites)
 
     await req.user.save()
     res.status(200).json({
