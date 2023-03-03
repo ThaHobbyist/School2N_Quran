@@ -1,7 +1,4 @@
-const spareRoutes = [
-  /^GET \/api\/players\?sort=true/, // Leaderboard
-  /^GET \/api\/schedules/ // Schedule
-]
+const spareRoutes = []
 
 /**
  * Needs to be authenticated to continue, except

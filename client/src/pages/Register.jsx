@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import styled from "styled-components";
 import Heading from '../components/Heading';
@@ -8,9 +8,10 @@ import Navbar from '../components/Navbar';
 const Login = () => {
   const [username, setusername] = useState(null)
   const [password, setPassword] = useState(null)
+  const navigate = useNavigate()
 
   const login = async () => {
-    const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
+    const res = await fetch(`/auth/signup`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -21,8 +22,11 @@ const Login = () => {
         username, password
       })
     })
-
+    console.log(res.status)
     const result = await res.json()
+    if(res.status === 200){
+      navigate('/login')
+    }
     console.log(result)
   }
 
@@ -33,7 +37,7 @@ const Login = () => {
   }
 
   const handleChange = (e) => {
-    console.log(e.target)
+    // console.log(e.target)
     if (e.target.name === "username") {
       setusername(e.target.value)
     } else if (e.target.name === "password") {
