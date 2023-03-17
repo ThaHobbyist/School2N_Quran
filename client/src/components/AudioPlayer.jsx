@@ -74,15 +74,15 @@ export default function AudioPlayer(props) {
 		
 	};
 
-	const backThirty = () => {
-		progressBar.current.value = Number(progressBar.current.value - 30);
-		changeRange();
-	};
+	// const backThirty = () => {
+	// 	progressBar.current.value = Number(progressBar.current.value - 30);
+	// 	changeRange();
+	// };
 
-	const forwardThirty = () => {
-		progressBar.current.value = Number(progressBar.current.value + 30);
-		changeRange();
-	};
+	// const forwardThirty = () => {
+	// 	progressBar.current.value = Number(progressBar.current.value + 30);
+	// 	changeRange();
+	// };
 
 	return (
 		<Player>
@@ -93,14 +93,14 @@ export default function AudioPlayer(props) {
 			></audio>
 
 			<div className="header">
-				<h5>{props.type} {props.surah['number']}</h5>
+				<h5>{props.type} {props.surah}</h5>
 				<h5>|</h5>
-				<h5>{props.surah['englishName']}</h5>
-				<h5>|</h5>
+				{props.surah['englishName'] != null ? (<><h5>{props.surah['englishName']}</h5><h5>|</h5></>) : <></>
+			}
 				<h5>Ayah {props.ayah['number']}</h5>
 			</div>
 
-			<div className="buttons">
+			{/* <div className="buttons">
 				<button className="forwardBackward" onClick={backThirty}>
 					<MdSkipPrevious /> 
 				</button>
@@ -114,7 +114,7 @@ export default function AudioPlayer(props) {
 				<button className="forwardBackward" onClick={forwardThirty}>
 					 <MdSkipNext />
 				</button>
-			</div>
+			</div> */}
 
 			<div className="track">
 				{/* current time */}

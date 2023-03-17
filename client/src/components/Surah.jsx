@@ -181,8 +181,8 @@ export default function Surah(props) {
 						<AudioPlayer
 							className="audio"
 							ayah={currAyah}
-							surah={S}
-							type="Surah"
+							surah={props.surah}
+							type={props.name}
 							startPlay={startPlay}
 							playAyah={playAyah}
 						/>
