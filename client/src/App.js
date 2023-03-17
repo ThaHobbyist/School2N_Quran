@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register"
 import { useState } from "react";
 import { useEffect } from "react";
+import Favourites from "./pages/Fav";
 
 function App() {
 	const [login, setLogin] = useState(localStorage.getItem('login'))
@@ -23,6 +24,7 @@ function App() {
 				<Route path="/quran" element={<Quran />} />
 				<Route path="/readSurah" element={<ReadSurah name="Surah" />} />
 				<Route path="/readPara" element={<ReadSurah name="Para" />} />
+				<Route path="/fav" element={ <Favourites/> } />
 				<Route path="/login" element={<Login />} />
 				<Route path="/register" element={<Register />} />
 			</Routes>
