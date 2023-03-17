@@ -13,6 +13,7 @@ export default function DisplayData(props) {
 	const colors = colorSet["colors"];
 	// const Q = Quran["data"];
 	const [Data, setData] = useState([])
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		getData()
@@ -31,11 +32,17 @@ export default function DisplayData(props) {
 			const data = await res.json()
 			setData(data.juzs)
 			console.log(data)
+			if(res.status == 401){
+				navigate('/login')
+			}
 		} else {
 			res = await fetch(`/api/surah`)
 			const data = await res.json()
 			setData(data.surahs)
 			console.log(data)
+			if(res.status == 401){
+				navigate('/login')
+			}
 		}
 
 		// console.log(data)

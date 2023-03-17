@@ -1,48 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-import Heading from "../components/Heading";
-import Back from "../components/Back";
 import Navbar from "../components/Navbar";
+import Heading from "../components/Heading";
 import AudioPlayer from "../components/AudioPlayer";
-import Counter from "../components/Counter";
-import Quran from "../utils/Quran_rectified.json";
-
+import { useEffect } from "react";
+import { useState } from "react";
 
 import Des2 from "../assets/num.png";
-
 import { MdPlayCircle } from "react-icons/md";
 import { AiOutlinePushpin, AiFillPushpin } from "react-icons/ai";
-import { useEffect } from "react";
+import Back from "../components/Back";
 
-export default function Surah(props) {
-	// const S = Quran["data"]["surahs"][props.surah - 1];
 
+function Favourites() {
+	const navigate = useNavigate();
+	const [S, setS] = useState([])
 	const [favourites, setfavourites] = useState([])
-	const [favouritesIndex, setfavouritesIndex] = useState([])
 	const [currAyah, setCurrAyah] = useState({});
 	const [startPlay, setStartPlay] = useState(false)
-	const [S, setS] = useState([])
-
-	useEffect(() => {
-		console.log(props)
-		getAyah()
-		getFav()
-		// console.log(favourites.includes((0).toString()))
-	}, [])
 
 	const getFav = async () => {
-		const res = await fetch(`/api/ayah/fav`)
+		const res = await fetch('/api/ayah/fav')
 		const data = await res.json()
-		const favourites = data.favourites;
-		setfavourites(favourites)
-		console.log(favourites)
-		let t = []
-		favourites.some(obj => {
-
-			t = [...t, obj.number]
-		})
-		setfavouritesIndex(t)
+		const fav = data.favourites;
+		console.log(fav)
+		setfavourites(fav)
 	}
 
 	const playAyah = (i) => {
@@ -54,33 +38,7 @@ export default function Surah(props) {
 		// console.log(S[i - 1], i);
 
 		let push = "false"
-		let pop = "false"
-		// console.log(favouritesIndex.includes(i.number),"XXXX")
-
-		// console.log(favourites.includes((i).toString()) === false)
-		let indexArray = favouritesIndex
-		if (favourites.length > 0) {
-			for (let x = 0; x < favourites.length; x++) {
-				const obj = favourites[x]
-				if (obj.number === i.number) {
-					indexArray = indexArray.filter(r => r != i.number)
-					push = "false"
-					pop = "true"
-					break
-				} else {
-					indexArray = [...indexArray,i.number]
-					push = "true"
-					pop = "false"
-				}
-			}
-			// console.log(obj.number === i.number)
-		}
-		else {
-			indexArray = [...indexArray,i.number]
-			push = "true"
-			pop = "false"
-		}
-		console.log(favouritesIndex)
+		let pop = "true"
 
 		const resput = await fetch(`/api/ayah/fav`, {
 			method: "POST",
@@ -90,47 +48,28 @@ export default function Surah(props) {
 			body: JSON.stringify({ push: push, pop: pop, ref: i })
 		})
 		const result = await resput.json()
-		setfavouritesIndex(indexArray)
 		console.log(result, "0000000000000000000")
 		setfavourites(result.favourites)
 	}
 
-	const getAyah = async () => {
-		if (props.name === "Para") {
-			const res = await fetch(`/api/juz/${props.surah}`)
-			const data = await res.json()
-			setCurrAyah(data.ayahs[0])
-			setS(data.ayahs)
-			// console.log(data, "line 37")
-		} else {
-			const res = await fetch(`/api/surah/${props.surah}`)
-			const data = await res.json()
-			setCurrAyah(data.surah[0])
-			setS(data.surah)
-			// console.log(data, "line 41")
-		}
-	}
+	useEffect(() => {
+		getFav()
+	}, [])
+
 
 	return (
 		<>
 			<Bg>
 				<Container>
 					<Heading />
+					<Back/>
 					<div className="title">
-						<Back className="back" />
-						<h5 className="bar">|</h5>
-						<h5 className="head">{props.name} {props.surah}</h5>
-						{props.name === "Para" ? (null) : (
-							<>
-								<h5 className="bar">|</h5>
-								<h5 className="head">{props.englishName}</h5>
-							</>
-						)}
+						<h5 className="head">Favourites</h5>
 					</div>
-					<div className="body">
+					{favourites.length ? (<div className="body">
 						<div className="content">
 							<div className="ayahs">
-								{S.map((item) => {
+								{favourites.map((item) => {
 									return (
 										<div className="ayat" key={item.number}>
 											<div className="cont">
@@ -161,7 +100,7 @@ export default function Surah(props) {
 												</button>
 												<button style={{ marginLeft: "10px", padding: "4px" }} onClick={() => { pin(item) }} >
 													{
-														favouritesIndex.includes((item.number)) ? (<AiFillPushpin className="icon" />) : (<AiOutlinePushpin className="icon" />)
+														(<AiFillPushpin className="icon" />)
 													}
 												</button>
 											</div>
@@ -169,14 +108,7 @@ export default function Surah(props) {
 									);
 								})}
 							</div>
-							<Counter
-								num={props.surah}
-								total={S.length}
-								moveFirst={props.moveFirst}
-								movePrev={props.movePrev}
-								moveNext={props.moveNext}
-								moveLast={props.moveLast}
-							/>
+
 						</div>
 						<AudioPlayer
 							className="audio"
@@ -186,10 +118,15 @@ export default function Surah(props) {
 							startPlay={startPlay}
 							playAyah={playAyah}
 						/>
-					</div>
-
-					<Navbar />
+					</div>) : (
+						<div className="body">
+							<div className="head">
+								No Favourites Yet
+							</div>
+						</div>
+					)}
 				</Container>
+				<Navbar />
 			</Bg>
 		</>
 	);
@@ -360,3 +297,5 @@ const Container = styled.div`
 		}
 	}
 `;
+
+export default Favourites;

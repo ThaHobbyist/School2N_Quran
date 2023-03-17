@@ -33,7 +33,7 @@ function Quran() {
 			id: 3,
 			name: "Pinned Items",
 			icon: <Pin2 />,
-			path: "/quran"
+			path: "/fav"
 		},
 	];
 

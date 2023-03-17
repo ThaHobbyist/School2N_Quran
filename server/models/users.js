@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     required: [true, '*Password is required'],
   },
   favourites: {
-    type: [String]
+    type: [Object]
   }
 });
 

@@ -27,22 +27,22 @@ router.get('/fav', async (req, res) => {
     })
 })
 
-router.post('/fav/:ref', async (req, res) => {
-    const { ref } = req.params
-    const { push, pop } = req.body
-    console.log(ref,push,pop,req.body)
+router.post('/fav', async (req, res) => {
+    const { push, pop, ref } = req.body
     const favs = req.user.favourites
+    console.log(ref.number,push,pop,"LINE 33")
 
     if (push === 'true') {
         req.user.favourites = favs.includes(ref) ? favs : [...favs, ref]
+        // console.log([...favs, ref], 'X');
     }
     else if(pop === 'true') {
-        req.user.favourites = favs.filter(r => r !== ref)
+        req.user.favourites = favs.filter(r => r.number !== ref.number)
     }
 
-    console.log(req.user.favourites)
 
     await req.user.save()
+    // console.log(req.user.favourites)
     res.status(200).json({
         favourites: req.user.favourites
     })
